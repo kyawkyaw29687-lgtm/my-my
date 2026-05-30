@@ -3,157 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Do I Have A Chance?</title>
+    <title>Birthday Gift</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* နောက်ခံ Polka Dot အပြာနုရောင်ဒီဇိုင်း */
         body {
-            margin: 0;
+            background-color: #cce6ff;
+            background-image: radial-gradient(#7cc0ff 18%, transparent 19%), radial-gradient(#7cc0ff 18%, transparent 19%);
+            background-size: 32px 32px;
+            background-position: 0 0, 16px 16px;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #ffb6c1; /* ပန်းရောင် Background */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Fredoka', sans-serif; /* စာလုံးဝိုင်းဝိုင်း Font သုံးထားသည် */
+            margin: 0;
             overflow: hidden;
         }
 
-        .container {
+        /* Card အလှဆင်ခြင်း */
+        .gift-container {
+            background: #ffffff;
+            border: 4px dashed #66b3ff;
+            padding: 25px 20px;
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+            width: 85%;
+            max-width: 350px;
             text-align: center;
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            width: 300px;
+            max-height: 85vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            justify-content: center;
         }
 
-        h1 {
-            color: #333;
-            font-size: 1.8rem;
-            margin: 0 0 15px 0;
+        /* အဆင့်ဆင့်ပြောင်းမည့် စာမျက်နှာများ */
+        .step {
+            display: none;
+        }
+        .step.active {
+            display: block;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.15);
         }
 
-        .avatar-box {
-            width: 150px;
-            height: 150px;
-            margin-bottom: 15px;
+        /* ပုံမပျက်မယ့် ၁၈နှစ် ကိတ်မုန့်ဒီဇိုင်း (အရွယ်အစား ပြန်ညှိထားသည်) */
+        .cake-art {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 10px auto;
+        }
+
+        /* စာလုံးဝိုင်းဝိုင်း ခေါင်းစီး */
+        h2 { 
+            color: #2c3e50; 
+            font-size: 2.1rem; 
+            margin: 5px 0 15px 0;
+            font-weight: 700;
+        }
+
+        /* စာရှည်ကြီးများ ဖတ်ရလွယ်ကူပြီး ဝိုင်းဝိုင်းလေးဖြစ်အောင် လုပ်ခြင်း */
+        .letter-text { 
+            color: #4a5568; 
+            font-size: 1rem; 
+            line-height: 1.6;
+            margin: 5px 0;
+            text-align: left; /* စာဖတ်ရလွယ်အောင် ဘယ်ကပ်ပေးထားသည် */
+            max-height: 40vh;
+            overflow-y: auto; /* စာရှည်ရင် Scroll ဆွဲဖတ်လို့ရအောင် */
+            padding-right: 5px;
+            font-weight: 400;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+
+        /* Next ขလုတ်ဒီဇိုင်း */
+        .btn-container {
             display: flex;
             justify-content: center;
-            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
         }
 
-        .buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            width: 100%;
-            height: 100px; /* ခလုတ်တွေ လွတ်လွတ်လပ်လပ် ကြီးဖို့ နေရာချန်ထားတာ */
-        }
-
-        button {
-            padding: 12px 25px;
-            font-size: 1.2rem;
+        .btn {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
             border: none;
-            border-radius: 10px;
+            padding: 10px 35px;
+            font-size: 1.05rem;
+            border-radius: 25px;
             cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.1s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            font-weight: 600;
+            font-family: 'Fredoka', sans-serif;
+        }
+        
+        .btn:active {
+            transform: scale(0.95);
         }
 
-        #yesBtn {
-            background-color: #4cd137; /* အစိမ်းရောင် ခလုတ် */
-            color: white;
-            position: relative;
-            z-index: 999;
+        .btn-no { 
+            background: linear-gradient(to right, #e74c3c, #c0392b); 
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4); 
         }
 
-        #noBtn {
-            background-color: #e84118; /* အနီရောင် ခလုတ် */
-            color: white;
-            position: relative;
+        @keyframes popIn {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Scrollbar အလှပြင်ခြင်း */
+        .letter-text::-webkit-scrollbar {
+            width: 4px;
+        }
+        .letter-text::-webkit-scrollbar-thumb {
+            background: #cbd5e0;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="card">
-        <h1 id="question">Do i have a chance?</h1>
+    <div class="gift-container">
         
-        <div class="avatar-box" id="avatarContainer">
-            <svg id="cuteAvatar" viewBox="0 0 100 100" width="100%" height="100%">
-                <ellipse cx="40" cy="88" rx="6" ry="4" fill="#f0f0f0" stroke="#333" stroke-width="2.5"/>
-                <ellipse cx="60" cy="88" rx="6" ry="4" fill="#f0f0f0" stroke="#333" stroke-width="2.5"/>
-                <path d="M 35,65 Q 35,90 50,90 Q 65,90 65,65 Z" fill="#fff" stroke="#333" stroke-width="2.5"/>
-                <ellipse cx="28" cy="70" rx="5" ry="7" fill="#fff" stroke="#333" stroke-width="2.5" transform="rotate(-15 28 70)"/>
-                <ellipse cx="72" cy="70" rx="5" ry="7" fill="#fff" stroke="#333" stroke-width="2.5" transform="rotate(15 72 70)"/>
-                <circle cx="50" cy="45" r="30" fill="#fff" stroke="#333" stroke-width="2.5"/>
-                <circle cx="28" cy="55" r="4" fill="#ffb6c1"/>
-                <circle cx="72" cy="55" r="4" fill="#ffb6c1"/>
-                <path d="M 32,48 Q 37,43 42,48" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
-                <path d="M 58,48 Q 63,43 68,48" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
-                <path d="M 47,56 Q 50,53 53,56" fill="none" stroke="#333" stroke-width="2.5" stroke-linecap="round"/>
-                <path d="M 50,15 Q 48,8 43,10 Q 48,12 50,15" fill="#4cd137" stroke="#333" stroke-width="1.5"/>
-            </svg>
-        </div> 
-        
-        <div class="buttons">
-            <button id="yesBtn">Yes</button>
-            <button id="noBtn">No</button>
+        <div class="step active" id="step1">
+            <div class="cake-art">
+                <svg viewBox="0 0 200 200" width="100%" height="100%">
+                    <rect x="30" y="110" width="140" height="60" rx="20" fill="#fff5f5" stroke="#111" stroke-width="5"/>
+                    <path d="M30,130 Q100,150 170,130 L170,140 Q100,160 30,140 Z" fill="#ffb7ca" stroke="#111" stroke-width="4"/>
+                    <path d="M85,75 L85,110 M115,75 Q125,75 125,85 T115,95 Q125,95 125,105 T115,110 M115,75 L115,110" stroke="#70a1ff" stroke-width="6" stroke-linecap="round" fill="none"/>
+                    <path d="M85,60 Q88,67 85,72 Q82,67 85,60" fill="#ffa502"/>
+                    <path d="M118,60 Q121,67 118,72 Q115,67 118,60" fill="#ffa502"/>
+                    <circle cx="100" cy="125" r="12" fill="#ff4757" stroke="#111" stroke-width="4"/>
+                    <path d="M96,115 Q100,110 104,115" stroke="#2ed573" stroke-width="3" fill="none"/>
+                    <circle cx="75" cy="140" r="4" fill="#111"/>
+                    <circle cx="125" cy="140" r="4" fill="#111"/>
+                    <path d="M95,145 Q100,148 105,145" stroke="#111" stroke-width="3" fill="none"/>
+                </svg>
+            </div>
+            <h2>Hiiiii Babyyy!</h2>
+            <p>( ⁠っ⁠ ⁠,⁠ ⁠ᴗ⁠ ⁠,⁠ ⁠)⁠っ</p>
+            <p>I have a special surprise for you. Click the next button! 👇❤️</p>
+            <div class="btn-container">
+                <button class="btn" onclick="nextStep(2)">Next ➡️</button>
+            </div>
         </div>
+
+        <div class="step" id="step2">
+            <div class="cake-art">
+                <svg viewBox="0 0 200 200" width="100%" height="100%">
+                    <rect x="30" y="110" width="140" height="60" rx="20" fill="#fff5f5" stroke="#111" stroke-width="5"/>
+                    <path d="M30,130 Q100,150 170,130 L170,140 Q100,160 30,140 Z" fill="#ffb7ca" stroke="#111" stroke-width="4"/>
+                    <path d="M85,75 L85,110 M115,75 Q125,75 125,85 T115,95 Q125,95 125,105 T115,110 M115,75 L115,110" stroke="#70a1ff" stroke-width="6" stroke-linecap="round" fill="none"/>
+                    <path d="M85,60 Q88,67 85,72 Q82,67 85,60" fill="#ffa502"/>
+                    <path d="M118,60 Q121,67 118,72 Q115,67 118,60" fill="#ffa502"/>
+                    <circle cx="100" cy="125" r="12" fill="#ff4757" stroke="#111" stroke-width="4"/>
+                    <circle cx="75" cy="140" r="4" fill="#111"/>
+                    <circle cx="125" cy="140" r="4" fill="#111"/>
+                </svg>
+            </div>
+            <h2>IT'S A BIG HUG ENVELOPE!</h2>
+            <p>Do you want to open it? ✉️</p>
+            <div class="btn-container">
+                <button class="btn" onclick="nextStep(3)">Open It! ✨</button>
+                <button class="btn btn-no" onclick="nextStep('fail')">No 😭</button>
+            </div>
+        </div>
+
+        <div class="step" id="stepFail">
+            <div class="cake-art">
+                <svg viewBox="0 0 200 200" width="100%" height="100%">
+                    <circle cx="100" cy="100" r="50" fill="#ffeaa7" stroke="#111" stroke-width="4"/>
+                    <path d="M80,90 L90,95 M120,90 L110,95" stroke="#111" stroke-width="4"/>
+                    <path d="M85,120 Q100,110 115,120" stroke="#111" stroke-width="4" fill="none"/>
+                </svg>
+            </div>
+            <h2>Awhh... Please open it! 🥺</h2>
+            <p>Don't say no to me... Try again, please? 💕</p>
+            <div class="btn-container">
+                <button class="btn" onclick="nextStep(2)">Okay, Again! 💖</button>
+            </div>
+        </div>
+
+        <div class="step" id="step3">
+            <div class="cake-art">
+                <svg viewBox="0 0 200 200" width="100%" height="100%">
+                    <rect x="30" y="110" width="140" height="60" rx="20" fill="#fff5f5" stroke="#111" stroke-width="5"/>
+                    <path d="M30,130 Q100,150 170,130 L170,140 Q100,160 30,140 Z" fill="#ffb7ca" stroke="#111" stroke-width="4"/>
+                    <path d="M85,75 L85,110 M115,75 Q125,75 125,85 T115,95 Q125,95 125,105 T115,110 M115,75 L115,110" stroke="#70a1ff" stroke-width="6" stroke-linecap="round" fill="none"/>
+                    <path d="M85,60 Q88,67 85,72 Q82,67 85,60" fill="#ffa502"/>
+                    <path d="M118,60 Q121,67 118,72 Q115,67 118,60" fill="#ffa502"/>
+                    <circle cx="100" cy="125" r="12" fill="#ff4757" stroke="#111" stroke-width="4"/>
+                    <circle cx="75" cy="140" r="4" fill="#111"/>
+                    <circle cx="125" cy="140" r="4" fill="#111"/>
+                </svg>
+            </div>
+            <h2>Happy Birthday! 🎉</h2>
+            <div class="letter-text">
+                I hope this year bring you and hope and laughter. I'm happy we got close this year and i still remember the first time we met, how i fell in love your smile and i know it's kinda weird, but I just really wanted to say it. I already know there's no chance for me, but honestly just talking to you is enough for me and Just grow up well and stay healthy that's more than enough for me. Wishing you all the best to pass Grade 12 with distinctions! Also, can i ask you one thing? Do I have a chance after G12?
+            </div>
+            <div class="btn-container">
+                <button class="btn" onclick="nextStep(1)">Start Over 🔄</button>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        const yesBtn = document.getElementById('yesBtn');
-        const noBtn = document.getElementById('noBtn');
-        const card = document.getElementById('card');
-        const avatarContainer = document.getElementById('avatarContainer');
+        function nextStep(stepNumber) {
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
 
-        const noTexts = ["Are you sure?", "Really sure?", "Think again!", "Last chance!", "Surely not?", "You might regret this!"];
-        let noCount = 0;
-        let yesScale = 1;
-        let noScale = 1;
-
-        noBtn.addEventListener('click', () => {
-            if (noCount < noTexts.length) {
-                noBtn.innerText = noTexts[noCount];
-                noCount++;
-
-                // Yes ကို တဖြည်းဖြည်း ကြီးအောင်လုပ်မယ်
-                yesScale += 0.35;
-                yesBtn.style.transform = `scale(${yesScale})`;
-
-                // No ကို သေးအောင်လုပ်မယ်
-                noScale -= 0.1;
-                noBtn.style.transform = `scale(${noScale})`;
+            if (stepNumber === 'fail') {
+                document.getElementById('stepFail').classList.add('active');
             } else {
-                noBtn.style.display = 'none';
-                yesScale += 1.5;
-                yesBtn.style.transform = `scale(${yesScale})`;
+                document.getElementById('step' + stepNumber).classList.add('active');
             }
-        });
-
-        // Yes နှိပ်ရင် အောင်မြင်သွားတဲ့အဆင့်
-        yesBtn.addEventListener('click', () => {
-            card.innerHTML = `
-                <h1 style="color: #e84118; font-size: 2.2rem; margin-bottom: 15px;">I knew it! ❤️</h1>
-                <div class="avatar-box">
-                    <svg viewBox="0 0 100 100" width="100%" height="100%">
-                        <circle cx="50" cy="45" r="30" fill="#fff" stroke="#333" stroke-width="2.5"/>
-                        <circle cx="28" cy="55" r="5" fill="#ffb6c1"/>
-                        <circle cx="72" cy="55" r="5" fill="#ffb6c1"/>
-                        <path d="M 30,46 Q 35,51 40,46" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
-                        <path d="M 60,46 Q 65,51 70,46" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
-                        <path d="M 50,52 C 50,52 44,44 44,39 C 44,35 47,33 50,36 C 53,33 56,35 56,39 C 56,44 50,52 50,52 Z" fill="#e84118" stroke="#333" stroke-width="1.5" transform="translate(0, 15) scale(1.2) translate(0, -10)"/>
-                    </svg>
-                </div>
-                <p style="font-size: 1.1rem; color: #666; font-weight: bold;">You made the right choice!</p>
-            `;
-            document.body.style.backgroundColor = "#ffffff";
-        });
+        }
     </script>
-
 </body>
 </html>
